@@ -1,0 +1,7 @@
+{
+  "name": "angkringan-client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

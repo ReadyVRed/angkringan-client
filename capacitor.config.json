@@ -1,0 +1,13 @@
+{
+  "appId": "com.vred.angkringan",
+  "appName": "angkringan-client",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
