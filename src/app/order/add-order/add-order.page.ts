@@ -15,6 +15,7 @@ export class AddOrderPage implements OnInit {
   CurrentUser: USER;
   orderForm: FormGroup;
   listProduk: PRODUK[];
+  produkSelected: PRODUK[] = [];
   error_messages = {
     'Nama': [
       { type: 'required', message: 'Tidak Boleh Kosong' },
@@ -61,6 +62,9 @@ export class AddOrderPage implements OnInit {
   async getProduk(event?: CustomEvent) {
     this.listProduk = [];
     this.listProduk = await this.supabase.get<PRODUK>('produk', '*', { mitraid: this.CurrentUser.mitraid }, 'id').toPromise();
+  }
+  produkChanged(item){
+    console.log(item);
   }
   async add() {
     await this.appService.presentLoading();

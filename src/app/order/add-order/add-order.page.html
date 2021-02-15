@@ -22,9 +22,9 @@
       </div>
     </ng-container>
     <ion-item>
-      <ion-label>Port</ion-label>
-      <ionic-selectable [items]="ports" [asdsad]="asdsahdui" itemValueField="id" itemTextField="name" [canSearch]="true"
-        (onChange)="">
+      <ion-label>Produk</ion-label>
+      <ionic-selectable [items]="listProduk" [isMultiple]="true" itemValueField="id" itemTextField="Nama"
+        [canSearch]="true" (onChange)="produkChanged($event)">
       </ionic-selectable>
     </ion-item>
     <ion-button (click)="addProduk()" expand="block" fill="clear" shape="round">
