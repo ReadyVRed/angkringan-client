@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
@@ -18,7 +19,8 @@ export class OrderPage implements OnInit {
   listOrder: Observable<ORDER[]>;
   constructor(private appService: AppService,
     private supabase: SupabaseService,
-    private modalController: ModalController) { }
+    private modalController: ModalController,
+    private router: Router) { }
 
   async ngOnInit() {
     this.CurrentUser = await this.appService.getCurrentUser();
@@ -49,21 +51,7 @@ export class OrderPage implements OnInit {
     );
   }
   async add() {
-    const modal = await this.modalController.create({
-      component: AddOrderPage,
-      backdropDismiss: true,
-      cssClass: 'small-modal',
-      componentProps: {
-        data: null,
-        isEdit: false
-      }
-    });
-    modal.onDidDismiss().then(async res => {
-      if (res.data) {
-        this.getOrder();
-      }
-    });
-    await modal.present();
+    this.router.navigateByUrl('/order/add-order');
   }
   async edit(data: ORDER) {
     const modal = await this.modalController.create({

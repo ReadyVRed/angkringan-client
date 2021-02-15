@@ -21,6 +21,15 @@
         {{error.message}}
       </div>
     </ng-container>
+    <ion-item>
+      <ion-label>Port</ion-label>
+      <ionic-selectable [items]="ports" [asdsad]="asdsahdui" itemValueField="id" itemTextField="name" [canSearch]="true"
+        (onChange)="">
+      </ionic-selectable>
+    </ion-item>
+    <ion-button (click)="addProduk()" expand="block" fill="clear" shape="round">
+      <ion-icon slot="start" name="add"></ion-icon> Tambah Produk
+    </ion-button>
     <ion-button expand="block" color="primary" type="submit" [disabled]="orderForm.invalid">
       Submit
     </ion-button>

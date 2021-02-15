@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
-import { ORDER, USER } from 'src/app/services/datatype';
+import { ORDER, PRODUK, USER } from 'src/app/services/datatype';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { OrderProdukPage } from '../order-produk/order-produk.page';
 
 @Component({
   selector: 'app-add-order',
@@ -13,6 +14,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 export class AddOrderPage implements OnInit {
   CurrentUser: USER;
   orderForm: FormGroup;
+  listProduk: PRODUK[];
   error_messages = {
     'Nama': [
       { type: 'required', message: 'Tidak Boleh Kosong' },
@@ -43,6 +45,22 @@ export class AddOrderPage implements OnInit {
 
   async ngOnInit() {
     this.CurrentUser = await this.appService.getCurrentUser();
+    await this.getProduk();
+  }
+  async addProduk() {
+    const modal = await this.modalController.create({
+      component: OrderProdukPage,
+      backdropDismiss: true,
+      cssClass: 'small-modal'
+    });
+    modal.onDidDismiss().then(async res => {
+
+    });
+    await modal.present();
+  }
+  async getProduk(event?: CustomEvent) {
+    this.listProduk = [];
+    this.listProduk = await this.supabase.get<PRODUK>('produk', '*', { mitraid: this.CurrentUser.mitraid }, 'id').toPromise();
   }
   async add() {
     await this.appService.presentLoading();

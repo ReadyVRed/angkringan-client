@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AddOrderPageRoutingModule } from './add-order-routing.module';
 
 import { AddOrderPage } from './add-order.page';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { AddOrderPage } from './add-order.page';
     FormsModule,
     IonicModule,
     AddOrderPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IonicSelectableModule
   ],
   declarations: [AddOrderPage]
 })
