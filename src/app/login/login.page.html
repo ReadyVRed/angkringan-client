@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="ion-justify-content-center" style="height: 100%;">
+    <ion-col size="12" size-sm="12" size-md="6" size-lg="6" size-xl="6" class="ion-align-self-center">
+      <ion-card>
+        <ion-card-header color="primary">
+          <ion-card-title class="ion-text-center">vOrder</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <form [formGroup]="loginForm" (ngSubmit)="Login()">
+            <ion-item>
+              <ion-label position="floating">Kode Toko</ion-label>
+              <ion-input required formControlName="MitraId" type="text"></ion-input>
+            </ion-item>
+            <ng-container *ngFor="let error of error_messages.MitraId">
+              <div *ngIf="loginForm.get('MitraId').hasError(error.type) && 
+                (loginForm.get('MitraId').dirty || loginForm.get('MitraId').touched)" class="error-message">
+                {{error.message}}
+              </div>
+            </ng-container>
+            <ion-item>
+              <ion-label position="floating">User Id</ion-label>
+              <ion-input required formControlName="UserId" type="text"></ion-input>
+            </ion-item>
+            <ng-container *ngFor="let error of error_messages.UserId">
+              <div *ngIf="loginForm.get('UserId').hasError(error.type) && 
+                (loginForm.get('UserId').dirty || loginForm.get('UserId').touched)" class="error-message">
+                {{error.message}}
+              </div>
+            </ng-container>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input required formControlName="Password" type="text"></ion-input>
+            </ion-item>
+            <ng-container *ngFor="let error of error_messages.Password">
+              <div *ngIf="loginForm.get('Password').hasError(error.type) && 
+                (loginForm.get('Password').dirty || loginForm.get('Password').touched)" class="error-message">
+                {{error.message}}
+              </div>
+            </ng-container>
+            <ion-button expand="block" color="primary" type="submit" [disabled]="loginForm.invalid">
+              Login
+            </ion-button>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

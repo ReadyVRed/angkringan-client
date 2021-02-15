@@ -24,3 +24,23 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.error-message {
+    font-size: 0.8em;
+    color: red;
+    text-align: left
+}
+
+.small-modal {
+    .modal-wrapper {
+        position: absolute;
+        bottom: 0;
+        min-height: initial;
+        top: initial;
+        height: 50%;
+        border-radius: 25px 25px 0px 0px;
+    }
+}
+.active-item {
+    border-left: 8px solid var(--ion-color-primary);
+}

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="modalController.dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{(isEdit ? 'Edit' : 'Tambah')}} Mitra</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="mitraForm" (ngSubmit)="(isEdit ? edit() : add())">
+    <ion-item>
+      <ion-label position="floating">Kode Toko</ion-label>
+      <ion-input required formControlName="KodeToko" type="text"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.KodeToko">
+      <div *ngIf="mitraForm.get('KodeToko').hasError(error.type) && 
+        (mitraForm.get('KodeToko').dirty || mitraForm.get('KodeToko').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Nama</ion-label>
+      <ion-input required formControlName="Nama" type="text"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.Nama">
+      <div *ngIf="mitraForm.get('Nama').hasError(error.type) && 
+        (mitraForm.get('Nama').dirty || mitraForm.get('Nama').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Alamat</ion-label>
+      <ion-textarea required formControlName="Alamat"></ion-textarea>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.Alamat">
+      <div *ngIf="mitraForm.get('Alamat').hasError(error.type) && 
+        (mitraForm.get('Alamat').dirty || mitraForm.get('Alamat').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-button expand="block" color="primary" type="submit" [disabled]="mitraForm.invalid">
+      Submit
+    </ion-button>
+  </form>
+</ion-content>

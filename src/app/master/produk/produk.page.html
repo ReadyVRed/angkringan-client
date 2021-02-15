@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="master-content"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Produk</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="RefreshContent($event)">
+    <ion-refresher-content refreshingSpinner="bubbles"></ion-refresher-content>
+  </ion-refresher>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ng-container *ngIf="(listProduk | async) as objList; else load;">
+          <ng-container *ngIf="objList.length > 0">
+            <ion-list *ngFor="let kat of objList">
+              <ion-list-header lines="full" color="primary">
+                <ion-label>{{kat[0]}}</ion-label>
+              </ion-list-header>
+              <ion-item-sliding *ngFor="let item of kat[1]">
+                <ion-item (click)="edit(item)">
+                  <ion-label>
+                    <h3>{{item.nama}}</h3>
+                    <p>Rp {{item.harga.toLocaleString('id-ID')}}</p>
+                  </ion-label>
+                  <ion-chip (click)="addStock(item);$event.stopPropagation();"
+                    [color]="(item.stock < 5 ? (item.stock <= 0 ? 'danger': 'warning'):'success')" mode="ios"
+                    outline="true" slot="end">
+                    <ion-label>Stock {{item.stock}}
+                    </ion-label>
+                    <ion-icon name="add"></ion-icon>
+                  </ion-chip>
+                </ion-item>
+                <ion-item-options side="end">
+                  <ion-item-option color="danger" (click)="delete(item)">
+                    <ion-icon slot="start" name="trash-bin"></ion-icon>Delete
+                  </ion-item-option>
+                </ion-item-options>
+              </ion-item-sliding>
+            </ion-list>
+          </ng-container>
+        </ng-container>
+        <ng-template #load>
+          <ion-item *ngFor="let item of [1,1,1,1]">
+            <ion-label>
+              <ion-text color="primary">
+                <h1>
+                  <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </h1>
+              </ion-text>
+              <p>
+                <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

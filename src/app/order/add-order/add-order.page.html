@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="modalController.dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Order</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="orderForm" (ngSubmit)="add()">
+    <ion-item>
+      <ion-label position="floating">Nama</ion-label>
+      <ion-input required formControlName="Nama" type="text"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.Nama">
+      <div *ngIf="orderForm.get('Nama').hasError(error.type) && 
+        (orderForm.get('Nama').dirty || orderForm.get('Nama').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-button expand="block" color="primary" type="submit" [disabled]="orderForm.invalid">
+      Submit
+    </ion-button>
+  </form>
+</ion-content>

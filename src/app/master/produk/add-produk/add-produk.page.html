@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="modalController.dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{(isEdit ? 'Edit' : 'Tambah')}} Produk</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="produkForm" (ngSubmit)="(isEdit ? edit() : add())">
+    <ion-item>
+      <ion-label position="floating">Nama</ion-label>
+      <ion-input required formControlName="Nama" type="text"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.Nama">
+      <div *ngIf="produkForm.get('Nama').hasError(error.type) && 
+        (produkForm.get('Nama').dirty || produkForm.get('Nama').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Nama Struk</ion-label>
+      <ion-input required formControlName="NamaStruk" type="text"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.NamaStruk">
+      <div *ngIf="produkForm.get('NamaStruk').hasError(error.type) && 
+        (produkForm.get('NamaStruk').dirty || produkForm.get('NamaStruk').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-item>
+      <ion-label>Kategori</ion-label>
+      <ion-select formControlName="Kategori" (ionChange)="kategoriChanged($event)" [mode]="'ios'">
+        <ion-select-option value="custom">Tambah Kategori</ion-select-option>
+        <ion-select-option value="Lainnya">Lainnya</ion-select-option>
+        <ion-select-option *ngFor="let item of listKategori" [value]="item.kategori">{{item.kategori}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.Kategori">
+      <div *ngIf="produkForm.get('Kategori').hasError(error.type) && 
+        (produkForm.get('Kategori').dirty || produkForm.get('Kategori').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Stock</ion-label>
+      <ion-input required formControlName="Stock"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.Stock">
+      <div *ngIf="produkForm.get('Stock').hasError(error.type) && 
+        (produkForm.get('Stock').dirty || produkForm.get('Stock').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Harga</ion-label>
+      <ion-input required formControlName="Harga"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.Harga">
+      <div *ngIf="produkForm.get('Harga').hasError(error.type) && 
+        (produkForm.get('Harga').dirty || produkForm.get('Harga').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-button expand="block" color="primary" type="submit" [disabled]="produkForm.invalid">
+      Submit
+    </ion-button>
+  </form>
+</ion-content>
