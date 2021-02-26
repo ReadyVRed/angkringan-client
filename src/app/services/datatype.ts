@@ -17,7 +17,8 @@ export interface PRODUK {
     mitraid?: string;
     nama?: string;
     stock?: number;
-    harga?: number;
+    harga_dasar?: number;
+    harga_jual?: number;
     kategori?: string;
     nama_struk?: string;
     last_update?: Date;
@@ -28,21 +29,47 @@ export interface TRANSAKSI {
     id?: number;
     order_id?: number;
     produkid?: number;
-    tanggal?: Date;
+    tanggal?: string;
+    jam?: string;
+    stock_sebelum?: number;
     jumlah?: number;
-    harga?: number;
+    harga_dasar?: number;
+    harga_jual?: number;
     total?: number;
-    produk: PRODUK;
+    produk?: PRODUK;
 }
 export interface ORDER {
     id?: number;
     mitraid?: string;
-    tanggal?: Date;
+    mitra?: MITRA;
+    tanggal?: string;
+    jam?: string;
     nama_pembeli?: string;
+    bayar?: number;
+    kembalian?: number;
     total?: number;
     user_input?: string;
     user_execute?: string;
     status?: number;
     tanggal_selesai?: string;
-    transaksi: TRANSAKSI[]
+    jam_selesai?: string;
+    transaksi?: TRANSAKSI[]
+}
+export interface ORDER_PRODUK {
+    Produk: PRODUK;
+    stock: number;
+    jumlah: number;
+    total: number;
+}
+export interface LAPORAN_PERTANGGAL {
+    tanggal?: string;
+    jumlah?: number;
+    total?: number;
+    pendapatan?: number;
+}
+export interface LAPORAN_PERPRODUK {
+    produk?: PRODUK;
+    jumlah?: number;
+    total?: number;
+    pendapatan?: number;
 }

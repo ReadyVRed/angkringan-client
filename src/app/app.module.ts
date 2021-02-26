@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { AutonumericModule } from '@angularfy/autonumeric';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +20,8 @@ import { IonicSelectableModule } from 'ionic-selectable';
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    IonicSelectableModule
+    IonicSelectableModule,
+    AutonumericModule.forRoot({ digitGroupSeparator: '.' })
   ],
   providers: [
     StatusBar,

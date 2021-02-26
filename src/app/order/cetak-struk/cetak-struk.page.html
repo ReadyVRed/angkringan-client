@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="modalController.dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{data.nama_pembeli}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-grid class="ion-no-padding">
+        <ion-row class="ion-no-padding">
+          <ion-col size="12" style="font-size: large;" class="ion-no-padding ion-text-center">
+            {{data.mitra.nama}}
+          </ion-col>
+          <ion-col size="12" class="ion-no-padding ion-text-center">
+            {{data.mitra.alamat}}
+          </ion-col>
+        </ion-row>
+        <hr>
+        <ion-row class="ion-no-padding">
+          <ion-col size="6" class="ion-no-padding">
+            {{data.tanggal_selesai}} - {{data.jam_selesai}}
+          </ion-col>
+          <ion-col size="6" class="ion-no-padding ion-text-right">
+            {{data.mitraid}}-{{data.id}}
+          </ion-col>
+        </ion-row>
+        <hr>
+        <ion-row *ngFor="let trx of transaksi" class="ion-no-padding">
+          <ion-col size="12" class="ion-no-padding">
+            {{trx.produk.nama}}
+          </ion-col>
+          <ion-col size="6">
+            {{trx.jumlah}} X {{trx.produk.harga_jual.toLocaleString('id-ID')}}
+          </ion-col>
+          <ion-col size="1"  class="ion-text-right">
+            :
+          </ion-col>
+          <ion-col size="5"  class="ion-text-right">
+            Rp {{trx.total.toLocaleString('id-ID')}}
+          </ion-col>
+        </ion-row>
+        <hr>
+        <ion-row class="ion-no-padding">
+          <ion-col size="6" class="ion-no-padding">Total</ion-col>
+          <ion-col size="6" class="ion-no-padding" class="ion-text-right">Rp {{data.total.toLocaleString('id-ID')}}</ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding">
+          <ion-col size="6" class="ion-no-padding">Bayar</ion-col>
+          <ion-col size="6" class="ion-no-padding" class="ion-text-right">Rp {{data.bayar.toLocaleString('id-ID')}}</ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding">
+          <ion-col size="6" class="ion-no-padding">Kembali</ion-col>
+          <ion-col size="6" class="ion-no-padding" class="ion-text-right">Rp {{data.kembalian.toLocaleString('id-ID')}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

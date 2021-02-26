@@ -8,5 +8,85 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-refresher slot="fixed" (ionRefresh)="RefreshContent($event)">
+    <ion-refresher-content refreshingSpinner="bubbles"></ion-refresher-content>
+  </ion-refresher>
+  <h3 class="ion-text-center" style="margin-bottom: 1px;">Selamat Datang</h3>
+  <h1 class="ion-text-center" style="margin-top: 2px;">{{CurrentUser.mitraid}}</h1>
+  <ng-container *ngIf="(listOrder | async) as orderList; else load;">
+    <ng-container *ngIf="orderList.length > 0">
+      <ion-row>
+        <ion-col size="6" class="ion-no-padding">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Order</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1>{{orderList.length}}</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6" class="ion-no-padding">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Total</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1>Rp {{getTotal(orderList).toLocaleString('id-ID')}}</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Pendapatan</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1>Rp {{getPendapatan(orderList).toLocaleString('id-ID')}}</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-list>
+        <ion-item-sliding *ngFor="let item of orderList" [disabled]="item.status == 1">
+          <ion-item>
+            <ion-label>
+              <h1>{{item.nama_pembeli}}</h1>
+              <p>Total Rp {{item.total.toLocaleString('id-ID')}}</p>
+            </ion-label>
+            <ion-label slot="end" class="ion-text-end">
+              <p>{{item.jam}}</p>
+              <ion-chip color="warning" style="margin-right: 0px;" *ngIf="item.status == 0" mode="ios" outline="true">
+                <ion-icon name="alert-circle"></ion-icon>
+                <ion-label>On Proses</ion-label>
+              </ion-chip>
+              <ion-chip color="success" style="margin-right: 0px;" *ngIf="item.status == 1" mode="ios" outline="true">
+                <ion-icon name="checkmark-circle"></ion-icon>
+                <ion-label>Selesai</ion-label>
+              </ion-chip>
+            </ion-label>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+    </ng-container>
+  </ng-container>
+  <ng-template #load>
+    <ion-item *ngFor="let item of [1,1,1,1]">
+      <ion-label>
+        <ion-text color="primary">
+          <h1>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h1>
+        </ion-text>
+        <p>
+          <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ng-template>
 </ion-content>

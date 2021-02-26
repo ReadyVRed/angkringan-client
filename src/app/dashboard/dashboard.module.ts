@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
+import { EditOrderPageModule } from '../order/edit-order/edit-order.module';
+import { CetakStrukPageModule } from '../order/cetak-struk/cetak-struk.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DashboardPageRoutingModule
+    DashboardPageRoutingModule,
+    EditOrderPageModule,
+    CetakStrukPageModule
   ],
   declarations: [DashboardPage]
 })

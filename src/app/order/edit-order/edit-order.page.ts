@@ -1,25 +1,28 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { IonicSelectableComponent } from 'ionic-selectable';
+import { map } from 'rxjs/operators';
 import { AppService } from 'src/app/services/app.service';
 import { ORDER, ORDER_PRODUK, PRODUK, TRANSAKSI, USER } from 'src/app/services/datatype';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { OrderProdukPage } from '../order-produk/order-produk.page';
 
 @Component({
-  selector: 'app-add-order',
-  templateUrl: './add-order.page.html',
-  styleUrls: ['./add-order.page.scss'],
+  selector: 'app-edit-order',
+  templateUrl: './edit-order.page.html',
+  styleUrls: ['./edit-order.page.scss'],
 })
-export class AddOrderPage implements OnInit {
+export class EditOrderPage implements OnInit {
   @ViewChild('produkSelectable') produkSelectable: IonicSelectableComponent;
+  @Input() data: ORDER;
   CurrentUser: USER;
   orderForm: FormGroup;
   listProduk: PRODUK[];
   disabledProduk: PRODUK[];
   produkSelected: ORDER_PRODUK[] = [];
+  produkTarget: ORDER_PRODUK[] = [];
   subTotal = { jumlah: 0, total: 0 };
   error_messages = {
     'Nama': [
@@ -51,8 +54,10 @@ export class AddOrderPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.orderForm.controls['Nama'].setValue(this.data.nama_pembeli);
     this.CurrentUser = await this.appService.getCurrentUser();
     await this.getProduk();
+    await this.getTransaksi();
   }
   async addProduk() {
     const modal = await this.modalController.create({
@@ -65,6 +70,33 @@ export class AddOrderPage implements OnInit {
   async getProduk(event?: CustomEvent) {
     this.listProduk = [];
     this.listProduk = await this.supabase.get<PRODUK>('produk', '*', { mitraid: this.CurrentUser.mitraid, status: true }, 'id').toPromise();
+  }
+  async getTransaksi() {
+    await this.appService.presentLoading();
+    this.supabase.get<TRANSAKSI>('transaksi', '*,produk(*)', { order_id: this.data.id }).subscribe(
+      async result => {
+        for (let i = 0; i < result.length; i++) {
+          const tmp = result[i];
+          let temp: ORDER_PRODUK = {
+            Produk: tmp.produk,
+            jumlah: tmp.jumlah,
+            stock: tmp.stock_sebelum,
+            total: (tmp.produk.harga_jual * tmp.jumlah)
+          }
+          this.produkSelected.push(temp);
+          this.produkTarget.push(temp);
+        }
+        this.jumlah();
+        this.produkSelectable.clear();
+        this.disabledProduk = this.produkSelected.map(x => { return x.Produk });
+      },
+      async err => {
+        await this.appService.presentToast("Terjadi masalah, silahkan coba kembali");
+        await this.appService.dismissLoading();
+      },
+      async () => {
+        await this.appService.dismissLoading();
+      });
   }
   produkChanged(event: {
     component: IonicSelectableComponent,
@@ -87,8 +119,23 @@ export class AddOrderPage implements OnInit {
     this.produkSelectable.clear();
     this.disabledProduk = this.produkSelected.map(x => { return x.Produk });
   }
-  async add() {
+  async edit() {
     await this.appService.presentLoading();
+    let trxDelete = await this.supabase.delete('transaksi', { order_id: this.data.id }).toPromise();
+    if (trxDelete.error != null) {
+      await this.appService.presentToast(`TERJADI MASALAH KETIKA DELETE TRANSAKSI`);
+    }
+    for (let i = 0; i < this.produkTarget.length; i++) {
+      const trx = this.produkTarget[i] as ORDER_PRODUK;
+      let jmlstock = (trx.Produk.stock + trx.jumlah);
+      await this.supabase.update('produk', { stock: jmlstock, status: (jmlstock != 0 ? true : false) }, { id: trx.Produk.id }).toPromise();
+    }
+    await this.add();
+    await this.appService.presentAlert('BERHASIL EDIT ORDER');
+    await this.appService.dismissLoading();
+    this.modalController.dismiss();
+  }
+  async add() {
     let objNew: ORDER = {
       mitraid: this.CurrentUser.mitraid,
       nama_pembeli: this.orderForm.value.Nama,
@@ -100,7 +147,7 @@ export class AddOrderPage implements OnInit {
       user_execute: null,
       user_input: this.CurrentUser.userid
     };
-    let orderInsert = await this.supabase.insert('order', objNew).toPromise();
+    let orderInsert = await this.supabase.update('order', objNew, { id: this.data.id }).toPromise();
     if (orderInsert.error != null) {
       await this.appService.presentToast(`TERJADI MASALAH KETIKA TAMBAH ORDER`);
       return;
@@ -129,9 +176,6 @@ export class AddOrderPage implements OnInit {
       let jmlstock = (trx.stock_sebelum - trx.jumlah);
       await this.supabase.update('produk', { stock: jmlstock, status: (jmlstock != 0 ? true : false) }, { id: trx.produkid }).toPromise();
     }
-    await this.appService.presentAlert('BERHASIL MENAMBAHKAN ORDER');
-    await this.appService.dismissLoading();
-    this.modalController.dismiss();
   }
   removeItem(produk: ORDER_PRODUK) {
     for (let [index, p] of this.produkSelected.entries()) {

@@ -13,7 +13,8 @@
           <ion-item routerLink='/members/tab1/dashboard' routerDirection='root' routerLinkActive="active-item">
             <ion-label>Dashboard</ion-label>
           </ion-item>
-          <ion-item routerLink='/members/tab1/mitra' routerDirection='root' routerLinkActive="active-item">
+          <ion-item *ngIf="CurrentUser.level == 0" routerLink='/members/tab1/mitra' routerDirection='root'
+            routerLinkActive="active-item">
             <ion-label>Mitra</ion-label>
           </ion-item>
           <ion-item routerLink='/members/tab1/user-sistem' routerDirection='root' routerLinkActive="active-item">

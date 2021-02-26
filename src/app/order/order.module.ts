@@ -7,6 +7,10 @@ import { IonicModule } from '@ionic/angular';
 import { OrderPageRoutingModule } from './order-routing.module';
 
 import { OrderPage } from './order.page';
+import { IonicSelectableModule } from 'ionic-selectable';
+import { EditOrderPageModule } from './edit-order/edit-order.module';
+import { CetakStrukPageModule } from './cetak-struk/cetak-struk.module';
+import { BayarOrderPageModule } from './bayar-order/bayar-order.module';
 
 @NgModule({
   imports: [
@@ -14,7 +18,11 @@ import { OrderPage } from './order.page';
     FormsModule,
     IonicModule,
     OrderPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IonicSelectableModule,
+    EditOrderPageModule,
+    CetakStrukPageModule,
+    BayarOrderPageModule
   ],
   declarations: [OrderPage]
 })

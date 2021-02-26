@@ -57,12 +57,22 @@
       </div>
     </ng-container>
     <ion-item>
-      <ion-label position="floating">Harga</ion-label>
-      <ion-input required formControlName="Harga"></ion-input>
+      <ion-label position="floating">Harga Dasar</ion-label>
+      <ion-input required formControlName="HargaDasar"></ion-input>
     </ion-item>
-    <ng-container *ngFor="let error of error_messages.Harga">
-      <div *ngIf="produkForm.get('Harga').hasError(error.type) && 
-        (produkForm.get('Harga').dirty || produkForm.get('Harga').touched)" class="error-message">
+    <ng-container *ngFor="let error of error_messages.HargaDasar">
+      <div *ngIf="produkForm.get('HargaDasar').hasError(error.type) && 
+        (produkForm.get('HargaDasar').dirty || produkForm.get('HargaDasar').touched)" class="error-message">
+        {{error.message}}
+      </div>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Harga Jual</ion-label>
+      <ion-input required formControlName="HargaJual"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of error_messages.HargaJual">
+      <div *ngIf="produkForm.get('HargaJual').hasError(error.type) && 
+        (produkForm.get('HargaJual').dirty || produkForm.get('HargaJual').touched)" class="error-message">
         {{error.message}}
       </div>
     </ng-container>

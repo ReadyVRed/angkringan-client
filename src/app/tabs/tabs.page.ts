@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AppService } from '../services/app.service';
+import { USER } from '../services/datatype';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +9,12 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
-
+  CurrentUser = <USER>{};
+  constructor(private appService: AppService) { }
+  async ngOnInit() {
+    this.CurrentUser = await this.appService.getCurrentUser();
+  }
+  async ionViewWillEnter() {
+    this.CurrentUser = await this.appService.getCurrentUser();
+  }
 }

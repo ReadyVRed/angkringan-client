@@ -1,16 +1,16 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="end">
+    <ion-buttons slot="start">
       <ion-button (click)="modalController.dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Order</ion-title>
+    <ion-title>Edit Order</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="orderForm" (ngSubmit)="add()">
+  <form [formGroup]="orderForm" (ngSubmit)="edit()">
     <ion-item>
       <ion-label position="floating">Nama</ion-label>
       <ion-input required formControlName="Nama" type="text"></ion-input>
@@ -94,7 +94,7 @@
       Rp {{this.subTotal.total.toLocaleString('id-ID')}}
     </ion-col>
     <ion-col size="6">
-      <ion-button expand="block" color="primary" type="submit" (click)="add()" [disabled]="orderForm.invalid">
+      <ion-button expand="block" color="primary" type="submit" (click)="edit()" [disabled]="orderForm.invalid">
         Submit
       </ion-button>
     </ion-col>

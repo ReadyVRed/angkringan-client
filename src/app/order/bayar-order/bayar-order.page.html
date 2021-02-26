@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="modalController.dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{data.nama_pembeli}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>
+      <h3>Total</h3>
+      <h1>Rp {{data.total.toLocaleString('id-ID')}}</h1>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Jumlah Bayar</ion-label>
+    <ion-input [(ngModel)]="jmlBayar" type="number"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      <h3>Kembali</h3>
+      <h1>Rp {{(jmlBayar - data.total).toLocaleString('id-ID')}}</h1>
+    </ion-label>
+  </ion-item>
+  <ion-button (click)="bayar()" expand="block" fill="solid" shape="round">
+    Bayar
+  </ion-button>
+</ion-content>

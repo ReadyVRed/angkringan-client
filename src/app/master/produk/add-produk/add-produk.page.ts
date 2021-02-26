@@ -26,8 +26,8 @@ export class AddProdukPage implements OnInit {
     ],
     'NamaStruk': [
       { type: 'required', message: 'Tidak Boleh Kosong' },
-      { type: 'minlength', message: 'Range Karakter 3-30' },
-      { type: 'maxlength', message: 'Range Karakter 3-30' },
+      { type: 'minlength', message: 'Range Karakter 3-15' },
+      { type: 'maxlength', message: 'Range Karakter 3-15' },
       { type: 'pattern', message: 'Tidak Boleh Menggunakan Karakter Simbol' }
     ],
     'Kategori': [
@@ -39,7 +39,10 @@ export class AddProdukPage implements OnInit {
     'Stock': [
       { type: 'required', message: 'Tidak Boleh Kosong' }
     ],
-    'Harga': [
+    'HargaJual': [
+      { type: 'required', message: 'Tidak Boleh Kosong' }
+    ],
+    'HargaDasar': [
       { type: 'required', message: 'Tidak Boleh Kosong' }
     ]
   };
@@ -58,7 +61,10 @@ export class AddProdukPage implements OnInit {
       Stock: new FormControl('', Validators.compose([
         Validators.required
       ])),
-      Harga: new FormControl('', Validators.compose([
+      HargaDasar: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      HargaJual: new FormControl('', Validators.compose([
         Validators.required
       ])),
       Kategori: new FormControl('', Validators.compose([
@@ -70,7 +76,7 @@ export class AddProdukPage implements OnInit {
       NamaStruk: new FormControl('', Validators.compose([
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(30),
+        Validators.maxLength(15),
         Validators.pattern('^[a-zA-Z0-9 ]*$')
       ])),
     });
@@ -83,7 +89,8 @@ export class AddProdukPage implements OnInit {
     if (this.isEdit) {
       this.produkForm.controls['Nama'].setValue(this.data.nama);
       this.produkForm.controls['Stock'].setValue(this.data.stock);
-      this.produkForm.controls['Harga'].setValue(this.data.harga);
+      this.produkForm.controls['HargaJual'].setValue(this.data.harga_jual);
+      this.produkForm.controls['HargaDasar'].setValue(this.data.harga_dasar);
       this.produkForm.controls['Kategori'].setValue(this.data.kategori);
       this.produkForm.controls['NamaStruk'].setValue(this.data.nama_struk);
       this.produkForm.updateValueAndValidity();
@@ -99,7 +106,6 @@ export class AddProdukPage implements OnInit {
       )).toPromise();
   }
   async kategoriChanged(event: CustomEvent) {
-    console.log(event.detail.value);
     let value = event.detail.value;
     if (value != "custom") {
       this.produkForm.controls['Kategori'].setValue(value);
@@ -122,7 +128,6 @@ export class AddProdukPage implements OnInit {
         let indexFound = this.listKategori.findIndex(color => color === customColorName)
         if (indexFound === -1) {
           this.listKategori.push({ kategori: customColorName });
-          console.log(this.listKategori);
           this.produkForm.controls['Kategori'].setValue(customColorName);
           this.produkForm.updateValueAndValidity();
         } else {
@@ -138,7 +143,8 @@ export class AddProdukPage implements OnInit {
     let objNew: PRODUK = {
       nama: this.produkForm.controls['Nama'].value,
       stock: this.produkForm.controls['Stock'].value,
-      harga: this.produkForm.controls['Harga'].value,
+      harga_jual: this.produkForm.controls['HargaJual'].value,
+      harga_dasar: this.produkForm.controls['HargaDasar'].value,
       kategori: this.produkForm.controls['Kategori'].value,
       nama_struk: this.produkForm.controls['NamaStruk'].value,
       status: true,
@@ -168,7 +174,8 @@ export class AddProdukPage implements OnInit {
     let objNew: PRODUK = {
       nama: this.produkForm.controls['Nama'].value,
       stock: this.produkForm.controls['Stock'].value,
-      harga: this.produkForm.controls['Harga'].value,
+      harga_jual: this.produkForm.controls['HargaJual'].value,
+      harga_dasar: this.produkForm.controls['HargaDasar'].value,
       kategori: this.produkForm.controls['Kategori'].value,
       nama_struk: this.produkForm.controls['NamaStruk'].value,
       user_update: this.CurrentUser.userid,

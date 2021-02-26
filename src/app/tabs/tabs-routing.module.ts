@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('../order/order.module').then(m => m.OrderPageModule)
       },
       {
+        path: 'laporan',
+        loadChildren: () => import('../laporan/laporan.module').then( m => m.LaporanPageModule)
+      },
+      {
         path: '',
         redirectTo: '/members/tab1',
         pathMatch: 'full'

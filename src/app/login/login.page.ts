@@ -76,7 +76,13 @@ export class LoginPage implements OnInit {
             await this.appService.presentToast("PASSWORD TIDAK SESUAI");
           } else {
             await this.storage.set('DATA-USER', result[0]);
-            this.router.navigateByUrl('/members/tab1/dashboard', { replaceUrl: true });
+            this.appService.isAuth.next(true);
+            this.appService.userData.next(result[0]);
+            if (result[0].level == 2) {
+              this.router.navigateByUrl('/members/order', { replaceUrl: true });
+            } else {
+              this.router.navigateByUrl('/members/tab1/dashboard', { replaceUrl: true });
+            }
           }
         } else {
           await this.appService.presentToast("USER TIDAK DITEMUKAN");

@@ -29,7 +29,8 @@
                 <ion-item (click)="edit(item)">
                   <ion-label>
                     <h3>{{item.nama}}</h3>
-                    <p>Rp {{item.harga.toLocaleString('id-ID')}}</p>
+                    <p>Harga Dasar Rp {{item.harga_dasar.toLocaleString('id-ID')}}</p>
+                    <p>Harga Jual Rp {{item.harga_jual.toLocaleString('id-ID')}}</p>
                   </ion-label>
                   <ion-chip (click)="addStock(item);$event.stopPropagation();"
                     [color]="(item.stock < 5 ? (item.stock <= 0 ? 'danger': 'warning'):'success')" mode="ios"

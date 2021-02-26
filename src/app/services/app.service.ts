@@ -4,6 +4,7 @@ import { AlertController, LoadingController, ToastController } from '@ionic/angu
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
 import { USER } from './datatype';
+import * as datefns from 'date-fns';
 const Hashids = require('hashids/cjs');
 
 
@@ -13,6 +14,7 @@ const KeysEnc = "4d4ng4p1Client";
 })
 export class AppService {
   isAuth: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  userData: BehaviorSubject<USER> = new BehaviorSubject<USER>(null);
   constructor(private alertController: AlertController,
     private loadingController: LoadingController,
     private toastController: ToastController,
@@ -28,12 +30,13 @@ export class AppService {
     }
   }
   async getCurrentUser() {
-    return await this.storage.get('DATA-USER') as USER;
+    return this.userData.value;
   }
- async Logout() {
-   await this.storage.clear().then(d => {
-      this.router.navigateByUrl('/login');
+  async Logout() {
+    await this.storage.clear().then(d => {
       this.isAuth.next(false);
+      this.userData.next(null);
+      this.router.navigateByUrl('/login');
     })
   }
   async presentAlert(msg: string) {
@@ -108,6 +111,17 @@ export class AppService {
         await this.loadingController.dismiss();
       }
     });
+  }
+  convDateToString(date: Date, format: string = "dd/MM/yyyy") {
+    return datefns.format(new Date(date), format);
+  }
+  convStringToDate(date: string, format: string = "dd/MM/yyyy") {
+    return datefns.parse(date, format, new Date());
+  }
+  convStringDateToString(date: string, format: string = "dd/MM/yyyy", format1: string = "dd/MM/yyyy") {
+    let ds = this.convStringToDate(date, format);
+    let sd = this.convDateToString(ds, format1);
+    return sd;
   }
   public HashIdDecode(str: string): string {
     const hashids = new Hashids(KeysEnc);

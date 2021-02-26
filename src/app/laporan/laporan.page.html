@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Laporan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="RefreshContent($event)">
+    <ion-refresher-content refreshingSpinner="bubbles"></ion-refresher-content>
+  </ion-refresher>
+  <ion-item>
+    <ion-label position="floating">Jenis Laporan</ion-label>
+    <ion-select [(ngModel)]="jenisLaporan" (ionChange)="jenisLaporanChanged($event)">
+      <ion-select-option value="tanggal">Per Tanggal</ion-select-option>
+      <ion-select-option value="produk">Per Produk</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-row class="ion-no-padding" style="padding-top: 5px;">
+    <ion-col size="6" class="ion-no-padding">
+      <ion-item>
+        <ion-label position="floating">Tgl Awal</ion-label>
+        <ion-datetime [(ngModel)]="Tanggal1" pickerFormat="DD-MM-YYYY" displayFormat="DD/MM/YYYY"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col size="6" class="ion-no-padding">
+      <ion-item>
+        <ion-label position="floating">Tgl Akhir</ion-label>
+        <ion-datetime [(ngModel)]="Tanggal2" pickerFormat="DD-MM-YYYY" displayFormat="DD/MM/YYYY"></ion-datetime>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-button (click)="jenisLaporanChanged()" expand="block" fill="solid" shape="round">
+    Refresh
+  </ion-button>
+  <ng-container *ngIf="jenisLaporan == 'tanggal'">
+    <ng-container *ngIf="(listLpTanggal | async) as lpTglList; else load;">
+      <ng-container *ngIf="lpTglList.length > 0; else lpNotfound">
+        <ion-list>
+          <ion-item *ngFor="let item of lpTglList">
+            <ion-label>
+              <h2>{{item.tanggal}}</h2>
+              <p>Pendapatan Rp {{item.pendapatan.toLocaleString('id-ID')}}</p>
+            </ion-label>
+            <ion-label slot="end">
+              <h2>Jumlah {{item.jumlah.toLocaleString('id-ID')}}</h2>
+              <p>Total Rp {{item.total.toLocaleString('id-ID')}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="6">Jumlah</ion-col>
+              <ion-col size="6" class="ion-text-right">{{getJumlah(lpTglList).toLocaleString('id-ID')}}</ion-col>
+              <ion-col size="6">Total</ion-col>
+              <ion-col size="6" class="ion-text-right">Rp {{getTotal(lpTglList).toLocaleString('id-ID')}}</ion-col>
+              <ion-col size="6">Pendapatan</ion-col>
+              <ion-col size="6" class="ion-text-right">Rp {{getPendapatan(lpTglList).toLocaleString('id-ID')}}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="jenisLaporan == 'produk'">
+    <ng-container *ngIf="(listLpProduk | async) as lpProdukList; else load;">
+      <ng-container *ngIf="lpProdukList.length > 0; else lpNotfound">
+        <ion-list>
+          <ion-item *ngFor="let item of lpProdukList">
+            <ion-label>
+              <h2>{{item.produk.nama}}</h2>
+              <p>Pendapatan Rp {{(item.harga_jual - item.harga_dasar).toLocaleString('id-ID')}}</p>
+            </ion-label>
+            <ion-label slot="end">
+              <h2>Jumlah {{item.jumlah.toLocaleString('id-ID')}}</h2>
+              <p>Total Rp {{item.total.toLocaleString('id-ID')}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="6">Jumlah</ion-col>
+              <ion-col size="6" class="ion-text-right">{{getJumlah(lpProdukList).toLocaleString('id-ID')}}</ion-col>
+              <ion-col size="6">Total</ion-col>
+              <ion-col size="6" class="ion-text-right">Rp {{getTotal(lpProdukList).toLocaleString('id-ID')}}</ion-col>
+              <ion-col size="6">Pendapatan</ion-col>
+              <ion-col size="6" class="ion-text-right">Rp {{getPendapatanProduk(lpProdukList).toLocaleString('id-ID')}}
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <ng-template #lpNotfound>
+    <h1 class="ion-text-center">Data tidak ditemukan</h1>
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="6">Jumlah</ion-col>
+          <ion-col size="6" class="ion-text-right">0</ion-col>
+          <ion-col size="6">Total</ion-col>
+          <ion-col size="6" class="ion-text-right">Rp 0</ion-col>
+          <ion-col size="6">Pendapatan</ion-col>
+          <ion-col size="6" class="ion-text-right">Rp 0</ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+  <ng-template #load>
+    <ion-item *ngFor="let item of [1,1,1,1]">
+      <ion-label>
+        <ion-text color="primary">
+          <h1>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h1>
+        </ion-text>
+        <p>
+          <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ng-template>
+</ion-content>

@@ -19,7 +19,7 @@ export class SupabaseService {
       query.match(match);
     }
     if (order !== null) {
-      query.order(order, { ascending: true });
+      query.order(order, { ascending: false });
     }
     if (limit !== null) {
       query.limit(limit);
@@ -28,8 +28,29 @@ export class SupabaseService {
       map(res => res.data as T[])
     );
   }
-  insert(resource: string, value) {
-    const query = this.supabase.from(resource).insert([value]);
+  getLaporan<T>(resource: string, select = "*", match = null, order = null, gte: { column, value } = null, lte: { column, value } = null, limit = null) {
+    const query = this.supabase.from(resource).select(select);
+    if (gte !== null) {
+      query.gte(gte.column, gte.value);
+    }
+    if (lte !== null) {
+      query.lte(lte.column, lte.value);
+    }
+    if (match !== null) {
+      query.match(match);
+    }
+    if (order !== null) {
+      query.order(order, { ascending: false });
+    }
+    if (limit !== null) {
+      query.limit(limit);
+    }
+    return from(query).pipe(
+      map(res => res.data as T[])
+    );
+  }
+  insert(resource: string, value, isArray: boolean = false) {
+    const query = this.supabase.from(resource).insert((isArray ? value : [value]));
     return from(query).pipe(
       map(res => res)
     );
@@ -41,7 +62,7 @@ export class SupabaseService {
     );
   }
   delete(resource: string, match) {
-    const query = this.supabase.from(resource).delete().match(match);
+    const query = this.supabase.from(resource).delete({ returning: 'representation', count: 'exact' }).match(match);
     return from(query).pipe(
       map(res => res)
     );

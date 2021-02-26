@@ -121,7 +121,7 @@ export class ProdukPage implements OnInit {
       let resData: number = res.data.values[0];
       if (resData && (res.role == 'ok')) {
         await this.appService.presentLoading();
-        this.supabase.update('produk', { stock: resData }, { id: data.id }).subscribe(
+        this.supabase.update('produk', { stock: resData, status: true }, { id: data.id }).subscribe(
           async result => {
             if (result.status == 200 && result.data.length > 0) {
               await this.appService.presentToast(`UPDATE STOCK '${data.nama}' BERHASIL`);

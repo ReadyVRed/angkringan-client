@@ -15,7 +15,19 @@ const routes: Routes = [
   {
     path: 'order-produk',
     loadChildren: () => import('./order-produk/order-produk.module').then( m => m.OrderProdukPageModule)
+  },  {
+    path: 'edit-order',
+    loadChildren: () => import('./edit-order/edit-order.module').then( m => m.EditOrderPageModule)
+  },
+  {
+    path: 'cetak-struk',
+    loadChildren: () => import('./cetak-struk/cetak-struk.module').then( m => m.CetakStrukPageModule)
+  },
+  {
+    path: 'bayar-order',
+    loadChildren: () => import('./bayar-order/bayar-order.module').then( m => m.BayarOrderPageModule)
   }
+
 ];
 
 @NgModule({

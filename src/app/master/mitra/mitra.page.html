@@ -29,9 +29,9 @@
                     <p>{{item.nama}}</p>
                     <p>{{item.alamat}}</p>
                   </ion-label>
-                  <ion-icon *ngIf="!item.status" slot="end" (click)="setAktif(item, true)" color="danger"
+                  <ion-icon *ngIf="!item.status" slot="end" (click)="setAktif(item, true);$event.stopPropagation();" color="danger"
                     name="close-circle"></ion-icon>
-                  <ion-icon *ngIf="item.status" slot="end" (click)="setAktif(item, false)" color="success"
+                  <ion-icon *ngIf="item.status" slot="end" (click)="setAktif(item, false);$event.stopPropagation();" color="success"
                     name="checkmark-circle"></ion-icon>
                 </ion-item>
                 <ion-item-options side="end">

@@ -1,6 +1,14 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Order</ion-title>
+    <ion-buttons slot="end" *ngIf="CurrentUser.level == 2">
+      <ion-button (click)="GantiPass()" color="warning">
+        <ion-icon slot="icon-only" name="key"></ion-icon>
+      </ion-button>
+      <ion-button (click)="Logout()" color="danger">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -16,20 +24,38 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
+        <ion-item>
+          <ion-label>Tanggal</ion-label>
+          <ion-datetime [(ngModel)]="filTanggal" (ionChange)="RefreshContent()" pickerFormat="DD-MM-YYYY"
+            displayFormat="DD/MM/YYYY"></ion-datetime>
+        </ion-item>
+        <!-- <ion-button (click)="RefreshContent()" expand="block" fill="solid" shape="round">
+          Refresh
+        </ion-button> -->
+      </ion-col>
+      <ion-col size="12">
         <ng-container *ngIf="(listOrder | async) as orderList; else load;">
           <ng-container *ngIf="orderList.length > 0">
             <ion-list>
               <ion-item-sliding *ngFor="let item of orderList" [disabled]="item.status == 1">
                 <ion-item (click)="edit(item)">
                   <ion-label>
-                    <h2>{{item.nama_pembeli}}</h2>
-                    <p>{{item.total.toLocaleString('id-ID')}}</p>
-                    <p>{{item.status}}</p>
+                    <h1>{{item.nama_pembeli}}</h1>
+                    <p>Total Rp {{item.total.toLocaleString('id-ID')}}</p>
                   </ion-label>
-                  <ion-icon *ngIf="item.status == 0" slot="end" (click)="setStatus(item)" color="danger"
-                    name="close-circle"></ion-icon>
-                  <ion-icon *ngIf="item.status == 1" slot="end" (click)="setStatus(item)" color="success"
-                    name="checkmark-circle"></ion-icon>
+                  <ion-label slot="end" class="ion-text-end">
+                    <p>{{item.jam}}</p>
+                    <ion-chip color="warning" style="margin-right: 0px;" *ngIf="item.status == 0"
+                      (click)="setStatus(item);$event.stopPropagation();" mode="ios" outline="true">
+                      <ion-icon name="alert-circle"></ion-icon>
+                      <ion-label>On Proses</ion-label>
+                    </ion-chip>
+                    <ion-chip color="success" style="margin-right: 0px;" *ngIf="item.status == 1" mode="ios"
+                      outline="true">
+                      <ion-icon name="checkmark-circle"></ion-icon>
+                      <ion-label>Selesai</ion-label>
+                    </ion-chip>
+                  </ion-label>
                 </ion-item>
                 <ion-item-options side="end">
                   <ion-item-option color="danger" (click)="delete(item)">
